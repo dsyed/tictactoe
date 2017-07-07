@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# TODO: Change y, x to row, col
 
 """A simple tic-tac-toe game."""
 
@@ -46,12 +45,12 @@ class Board(object):
             print '{} wins!'.format(self.get_current_player())
             raise SystemExit
 
-    def move(self, y, x):
+    def move(self, row, col):
         """Move the current player's token onto the board and switch player."""
-        self.state[y][x] = self.current_player
+        self.state[row][col] = self.current_player
 
-        self.check_winner('row', y)
-        self.check_winner('col', x)
+        self.check_winner('row', row)
+        self.check_winner('col', col)
 
         self.switch_player()
 
@@ -67,12 +66,12 @@ def prompt(board):
     """A single turn of gameplay."""
     print board
 
-    # Expected format: [y:number] [x:number]
+    # Expected format: [row:int] [col:int]
     # These are the coordinates of the space
     space = raw_input('Where would you like to place {}: '.format(board.get_current_player()))
-    y, x = [int(coord) for coord in space.split()]
+    row, col = [int(coord) for coord in space.split()]
 
-    board.move(y, x)
+    board.move(row, col)
 
 while True:
     prompt(board)
