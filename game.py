@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# TODO: Change y, x to row, col
+
 """A simple tic-tac-toe game."""
 
 
@@ -15,6 +17,16 @@ class Board(object):
             [2, 2, 2],
             [2, 2, 2]
         ]
+        self.win_counter = [
+            {
+                'row': [0, 0, 0],
+                'col': [0, 0, 0]
+            },
+            {
+                'row': [0, 0, 0],
+                'col': [0, 0, 0]
+            }
+        ]
 
     def get_current_player(self):
         """Return a string representation of the current player."""
@@ -24,14 +36,28 @@ class Board(object):
         """Switch between X and O."""
         self.current_player ^= 1
 
+    # TODO: Check diagonals too
+    def check_winner(self, dim, i):
+        """Check if a player has won the game."""
+        self.win_counter[self.current_player][dim][i] += 1
+
+        if (self.win_counter[self.current_player][dim][i] == 3):
+            print self
+            print '{} wins!'.format(self.get_current_player())
+            raise SystemExit
+
     def move(self, y, x):
         """Move the current player's token onto the board and switch player."""
         self.state[y][x] = self.current_player
+
+        self.check_winner('row', y)
+        self.check_winner('col', x)
+
         self.switch_player()
 
     def __str__(self):
         """String representation of the board for display."""
-        return '\n' + '\n'.join([' '.join([Board.STATES[el] for el in row]) for row in self.state])
+        return '\n' + '\n'.join([' '.join([Board.STATES[el] for el in row]) for row in self.state]) + '\n'
 
 
 board = Board()
