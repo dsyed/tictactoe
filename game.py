@@ -19,11 +19,13 @@ class Board(object):
         self.win_counter = [
             {
                 'row': [0, 0, 0],
-                'col': [0, 0, 0]
+                'col': [0, 0, 0],
+                'dia': [0, 0]
             },
             {
                 'row': [0, 0, 0],
-                'col': [0, 0, 0]
+                'col': [0, 0, 0],
+                'dia': [0, 0]
             }
         ]
 
@@ -35,7 +37,6 @@ class Board(object):
         """Switch between X and O."""
         self.current_player ^= 1
 
-    # TODO: Check diagonals too
     def check_winner(self, dim, i):
         """Check if a player has won the game."""
         self.win_counter[self.current_player][dim][i] += 1
@@ -51,6 +52,14 @@ class Board(object):
 
         self.check_winner('row', row)
         self.check_winner('col', col)
+
+        # NW-SE diagonal can be represented by `x = y`
+        if (row == col):
+            self.check_winner('dia', 0)
+        
+        # NE-SW diagonal can be represented by `x + y = 2`
+        if (row + col == 2):
+            self.check_winner('dia', 1)
 
         self.switch_player()
 
